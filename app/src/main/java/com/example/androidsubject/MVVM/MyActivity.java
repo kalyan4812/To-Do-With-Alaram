@@ -15,6 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.Menu;
@@ -84,6 +89,31 @@ public class MyActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Note deleted", Toast.LENGTH_SHORT).show();
             }
 
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                if(actionState==ItemTouchHelper.ACTION_STATE_SWIPE){
+                    View view=viewHolder.itemView;
+                    Paint p=new Paint();
+                    Bitmap bitmap;
+                    //dx>0 swipe left to right
+                    if(dX<0){
+                        bitmap= BitmapFactory.decodeResource(getResources(),R.mipmap.ic_delete_white_png);
+                        p.setColor(Color.RED);
+                        c.drawRect(view.getRight()+dX,view.getTop(),view.getRight(),view.getBottom(),p);
+                        c.drawBitmap(bitmap,view.getRight()-bitmap.getWidth(),view.getTop()+(view.getBottom()-view.getTop()-bitmap.getHeight())/2 ,p);
+                    }
+                    else {
+                        bitmap= BitmapFactory.decodeResource(getResources(),R.mipmap.ic_delete_white_png);
+                        p.setColor(Color.GREEN);
+                        c.drawRect(view.getLeft(),view.getTop(),view.getLeft()+dX,view.getBottom(),p);
+                        c.drawBitmap(bitmap,view.getLeft(),view.getTop()+(view.getBottom()-view.getTop()-bitmap.getHeight())/2 ,p);
+                    }
+                    viewHolder.itemView.setTranslationX(dX);;
+                }
+                else {
+                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                }
+            }
         }).attachToRecyclerView(recyclerView);
 
     }

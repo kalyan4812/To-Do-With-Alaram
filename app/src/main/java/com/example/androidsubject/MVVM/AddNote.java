@@ -3,9 +3,6 @@ package com.example.androidsubject.MVVM;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -18,7 +15,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -62,7 +58,7 @@ public class AddNote extends AppCompatActivity {
     static NotificationManager notificationManager;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    OneTimeWorkRequest oneTimeWorkRequest;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +102,7 @@ public class AddNote extends AppCompatActivity {
                         AlarmManager objAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                         Intent alamShowIntent = new Intent(getApplicationContext(), AlaramBroadcast.class);
                         alamShowIntent.putExtra("key", editTextDescription.getText().toString());
-                        alamShowIntent.putExtra("msg",editTextTitle.getText().toString());
+                        alamShowIntent.putExtra("msg", editTextTitle.getText().toString());
                         PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, alamShowIntent, 0);
 
                         assert objAlarmManager != null;
